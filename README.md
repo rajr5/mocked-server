@@ -97,7 +97,7 @@ This is useful when you want to be able to call to a server and get a response v
 * Make `GET` or `POST` requiest to `/`
 
 ## Deploying on Heroku
-Heroku is the easiest place to deploy code. 
+Heroku is really easy to use for deploying node apps and I highly recommend it - simple and free for minimal use. Your app will "sleep" if not used for a period of time. This means the first request can be a little slow as the server wake up.
 * Fork this repo, or clone and upload somewhere
 * Create/login to Heroku
 * Create a new Heroku app
