@@ -15,10 +15,13 @@ app.post('/', function(req, res, next) {
   const error = req.query.error;
   if(error) {
     res.status(500);
-    res.json({
+    const responseObj = {
       message: req.query.message || `Sending generic error because "error" query param was specified`,
-      error: err
-    });
+      error: error,
+      originalPayload: req.body,
+      queryParams: req.query
+    };
+    res.json(responseObj);
   } else {
 
   }
