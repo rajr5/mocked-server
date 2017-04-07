@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
  * Respond to any request with a stock response
  */
 app.post('/', function(req, res, next) {
+  console.log('POST request to /');
   const error = req.query.error;
   if(error) {
     res.status(500);
@@ -22,14 +23,17 @@ app.post('/', function(req, res, next) {
 
   }
   res.status(200);
-  res.json({
+  const responseObj = {
     response: "OK",
     originalPayload: req.body,
     queryParams: req.query
-  });
+  };
+  console.log('responseObj', responseObj);
+  res.json(responseObj);
 });
 
 app.get('/', function(req, res, next) {
+  console.log('GET request to /');
   res.json({
     availableEndpoints: [
       {
