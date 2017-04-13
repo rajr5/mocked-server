@@ -1,17 +1,26 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
 
-var app = express();
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const logging = process.env.logging || true;
+
+function log(...data) {
+  if(logging) {
+    console.log(...data);
+  }
+}
 
 /**
  * Respond to any request with a stock response
  */
 app.post('/', function(req, res, next) {
-  console.log('POST request to /');
+  log('POST request to /', req.query);
+  log('QUERY', JSON.stringify(req.query));
   const error = req.query.error;
   if(error) {
     res.status(500);
@@ -21,23 +30,24 @@ app.post('/', function(req, res, next) {
       originalPayload: req.body,
       queryParams: req.query
     };
+    log('RESPONSE', JSON.stringify(responseObj));
     res.json(responseObj);
   } else {
-
+    res.status(200);
+    const responseObj = {
+      response: "OK",
+      originalPayload: req.body,
+      queryParams: req.query
+    };
+    log('RESPONSE', JSON.stringify(responseObj));
+    res.json(responseObj);
   }
-  res.status(200);
-  const responseObj = {
-    response: "OK",
-    originalPayload: req.body,
-    queryParams: req.query
-  };
-  console.log('responseObj', responseObj);
-  res.json(responseObj);
 });
 
 app.get('/', function(req, res, next) {
-  console.log('GET request to /');
-  res.json({
+  log('GET request to /');
+  log('QUERY', JSON.stringify(req.query));
+  const responseObj = {
     availableEndpoints: [
       {
         method: 'POST',
@@ -62,7 +72,9 @@ app.get('/', function(req, res, next) {
         }
       }
     ]
-  });
+  };
+  log('RESPONSE', JSON.stringify(responseObj));
+  res.json(responseObj);
 });
 
 // catch 404 and forward to error handler
@@ -73,6 +85,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
+  log('ERROR', err.message);
   res.status(err.status || 500);
   res.json({
     message: err.message,
