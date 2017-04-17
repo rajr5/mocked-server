@@ -19,7 +19,7 @@ function log(...data) {
  * Respond to any request with a stock response
  */
 app.post('/', function(req, res, next) {
-  log('POST request to /', req.query);
+  log('POST request to /', req.body);
   log('QUERY', JSON.stringify(req.query));
   const error = req.query.error;
   if(error) {
